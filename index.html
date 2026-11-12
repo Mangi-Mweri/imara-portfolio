@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Imara — petty cash app | Brian Mweri</title>
 <meta name="description" content="Imara is a petty cash and expense approval app for Android, Windows, macOS and Linux, with its own server. A case study by Brian Mweri.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<meta property="og:title" content="Imara — petty cash app">
+<meta property="og:description" content="A petty cash and expense approval app for Android, Windows, macOS and Linux. A case study by Brian Mweri.">
+<meta property="og:image" content="https://mangi-mweri.github.io/imara-portfolio/shots/desktop_home.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
@@ -39,7 +44,12 @@ section { padding-block: clamp(44px, 6vw, 80px); }
 
 .nav { position: sticky; top: 0; z-index: 5; background: var(--brand-deep); color: #fff; }
 .nav .wrap { display: flex; align-items: center; gap: 18px; min-height: 54px; flex-wrap: wrap; }
-.nav b { font-family: var(--font-display); letter-spacing: 0.28em; margin-right: auto; }
+.nav b { font-family: var(--font-display); letter-spacing: 0.28em; margin-right: auto; display: inline-flex; align-items: center; gap: 10px; }
+.mark { width: 30px; height: 30px; flex: none; }
+.wordmark { display: flex; align-items: center; gap: 14px; font: 600 1.25rem var(--font-display); letter-spacing: 0.3em; }
+.wordmark .mark { width: 52px; height: 52px; }
+.get-head { display: flex; align-items: center; gap: 12px; }
+.get-head img { width: 48px; height: 48px; border-radius: 50%; }
 .nav a { text-decoration: none; font-size: 0.92rem; opacity: 0.86; }
 .nav a:hover { opacity: 1; text-decoration: underline; }
 
@@ -143,7 +153,7 @@ dialog button { position: fixed; top: 16px; right: 16px; border: 0; border-radiu
 
 <nav class="nav" aria-label="Sections">
   <div class="wrap">
-    <b>IMARA</b>
+    <b><svg class="mark" viewBox="0 0 48 48" role="img" aria-label="Imara logo"><circle cx="24" cy="24" r="24" fill="#fff"/><path d="M24 11 37 19.5H11zM14.5 22h4v9.5h-4zM22 22h4v9.5h-4zM29.5 22h4v9.5h-4zM12.5 34h23v3h-23z" fill="#1711b9"/></svg>IMARA</b>
     <a class="opt" href="#how">How it works</a>
     <a class="opt" href="#desktop">Desktop</a>
     <a class="opt" href="#phone">Phone</a>
@@ -155,6 +165,7 @@ dialog button { position: fixed; top: 16px; right: 16px; border: 0; border-radiu
 <header class="hero">
   <div class="wrap">
     <div class="hero-copy">
+      <div class="wordmark"><svg class="mark" viewBox="0 0 48 48" role="img" aria-label="Imara logo"><circle cx="24" cy="24" r="24" fill="#fff"/><path d="M24 11 37 19.5H11zM14.5 22h4v9.5h-4zM22 22h4v9.5h-4zM29.5 22h4v9.5h-4zM12.5 34h23v3h-23z" fill="#1711b9"/></svg>IMARA</div>
       <h1>Petty cash, from the first request to the last <em>shilling</em>.</h1>
       <p>Imara is an app for companies that hand out cash every day. Staff ask for money with a photo of the receipt. Managers approve, pay from a cash box and settle advances. Every movement stays on the record.</p>
       <div class="facts" aria-label="Project facts">
@@ -304,7 +315,7 @@ dialog button { position: fixed; top: 16px; right: 16px; border: 0; border-radiu
           <li><b>Send a request</b><span>Tap + and make a claim with any photo as the receipt. Then watch it move: waiting, approved, paid.</span></li>
         </ol>
         <div class="get">
-          <h3>Get the app</h3>
+          <div class="get-head"><img src="logo.png" alt="Imara app icon" width="48" height="48"><h3>Get the app</h3></div>
           <a class="btn solid" href="Imara.apk" download>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
             Download for Android
@@ -327,6 +338,7 @@ dialog button { position: fixed; top: 16px; right: 16px; border: 0; border-radiu
     <span class="eyebrow">Work with me</span>
     <h2>From idea to a live system your team uses every day</h2>
     <p>I take a product from the first conversation through design, the app, the server and the database, to launch and updates after it. Imara is a working example: live, tested, and running on phones and computers.</p>
+    <div class="wordmark"><svg class="mark" viewBox="0 0 48 48" role="img" aria-label="Imara logo"><circle cx="24" cy="24" r="24" fill="#fff"/><path d="M24 11 37 19.5H11zM14.5 22h4v9.5h-4zM22 22h4v9.5h-4zM29.5 22h4v9.5h-4zM12.5 34h23v3h-23z" fill="#1711b9"/></svg>IMARA</div>
     <p>Brian Mweri · <a href="https://github.com/Mangi-Mweri">github.com/Mangi-Mweri</a></p>
     <p class="by">Every screen on this page shows sample data, never real people.</p>
   </div>
