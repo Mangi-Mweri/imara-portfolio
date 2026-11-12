@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imara — petty cash app | Brian Mweri</title>
+<meta name="description" content="Imara is a petty cash and expense approval app for Android, Windows, macOS and Linux, with its own server. A case study by Brian Mweri.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+:root {
+  --bg: #eef1ff; --surface: #ffffff; --line: #dde2f5; --ink: #20264a; --muted: #5a6082;
+  --brand: #1711b9; --brand-deep: #120d93; --sky: #43bdeb; --money: #1f7a35; --on-brand: #ffffff; --frame: #141738;
+  --font-display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-data: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0e1030; --surface: #181b45; --line: #2a2e66; --ink: #eef0ff; --muted: #a9aed3;
+    --brand: #2a24c9; --brand-deep: #15127a; --sky: #5cc8f0; --money: #6fd08a; --frame: #05061a; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 1.0625rem/1.6 var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.2; margin: 0; text-wrap: balance; }
+h2 { font-size: 1.6rem; font-weight: 700; }
+h3 { font-size: 1.15rem; font-weight: 600; }
+p { margin: 0; }
+img { max-width: 100%; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 600 0.78rem var(--font-display); letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand); }
+@media (prefers-color-scheme: dark) { .eyebrow { color: var(--sky); } }
+.lede { color: var(--muted); max-width: 62ch; }
+section { padding-block: clamp(44px, 6vw, 80px); }
+.section-head { display: grid; gap: 10px; margin-bottom: 30px; max-width: 68ch; }
+
+.nav { position: sticky; top: 0; z-index: 5; background: var(--brand-deep); color: #fff; }
+.nav .wrap { display: flex; align-items: center; gap: 18px; min-height: 54px; flex-wrap: wrap; }
+.nav b { font-family: var(--font-display); letter-spacing: 0.28em; margin-right: auto; }
+.nav a { text-decoration: none; font-size: 0.92rem; opacity: 0.86; }
+.nav a:hover { opacity: 1; text-decoration: underline; }
+
+.hero { background: var(--brand); color: var(--on-brand); border-radius: 0 0 36px 36px; overflow: hidden; }
+.hero .wrap { padding-block: clamp(36px, 6vw, 68px) 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 40px; align-items: end; }
+.hero-copy { display: grid; gap: 20px; padding-bottom: clamp(36px, 6vw, 68px); min-width: 0; }
+.hero h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); font-weight: 700; }
+.hero h1 em { font-style: normal; color: var(--sky); }
+.hero p { color: rgba(255,255,255,.88); max-width: 52ch; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.facts span { font-size: 0.875rem; padding: 5px 12px; border-radius: 999px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 14px; font: 600 1rem var(--font-display); text-decoration: none; border: 1.5px solid transparent; }
+.btn.light { background: #fff; color: #1711b9; }
+.btn.ghost { border-color: rgba(255,255,255,.6); color: #fff; }
+.btn.solid { background: var(--brand); color: #fff; }
+.btn svg { width: 20px; height: 20px; }
+.by { font-size: 0.875rem; color: rgba(255,255,255,.75); }
+.fan { position: relative; height: clamp(360px, 44vw, 520px); min-width: 0; }
+.fan .phone { position: absolute; width: 44%; bottom: -40px; }
+.fan .phone:nth-child(1) { left: 2%; transform: rotate(-7deg); bottom: -70px; }
+.fan .phone:nth-child(2) { left: 28%; z-index: 2; width: 46%; }
+.fan .phone:nth-child(3) { right: 0; transform: rotate(7deg); bottom: -70px; }
+
+.phone, .screen { display: block; border: 0; background: var(--frame); cursor: zoom-in; max-width: 100%; box-shadow: 0 18px 40px rgba(10,12,60,.26); }
+.phone { padding: 7px; border-radius: 30px; }
+.phone img { display: block; width: 100%; aspect-ratio: 390 / 844; border-radius: 24px; object-fit: cover; object-position: top; }
+.screen { padding: 8px 8px 0; border-radius: 14px 14px 0 0; width: 100%; }
+.screen img { display: block; width: 100%; aspect-ratio: 1280 / 800; border-radius: 8px 8px 0 0; }
+.laptop { display: grid; min-width: 0; }
+.laptop::after { content: ""; height: 12px; margin-inline: -4%; border-radius: 0 0 14px 14px; background: var(--frame); opacity: 0.9; }
+
+.journey { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; counter-reset: step; }
+.stop { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.stop h3::before { counter-increment: step; content: counter(step); display: inline-grid; place-items: center; width: 28px; height: 28px; margin-right: 10px; border-radius: 50%; background: var(--brand); color: #fff; font-size: 0.85rem; vertical-align: 2px; }
+.stop p { color: var(--muted); font-size: 0.9rem; }
+
+.desk-lead { display: grid; gap: 14px; }
+.desk-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 22px; margin-top: 34px; }
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+figcaption { font-size: 0.9rem; color: var(--muted); }
+figcaption b { color: var(--ink); font-family: var(--font-display); font-weight: 600; }
+
+.strip { display: flex; gap: 18px; overflow-x: auto; padding-bottom: 12px; scroll-snap-type: x proximity; }
+.strip figure { flex: 0 0 clamp(170px, 20vw, 210px); scroll-snap-align: start; }
+
+.proof { background: var(--surface); border-block: 1px solid var(--line); }
+.numbers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.number { padding: 20px; border-radius: 18px; background: var(--bg); display: grid; gap: 6px; }
+.number b { font: 500 1.9rem/1.1 var(--font-data); color: var(--brand); }
+@media (prefers-color-scheme: dark) { .number b { color: var(--sky); } }
+.number span { font-size: 0.875rem; color: var(--muted); }
+.pillars { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: 44px; }
+.pillars div { display: grid; gap: 8px; align-content: start; }
+.pillars p { color: var(--muted); }
+
+.try { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 32px; align-items: start; }
+.steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; counter-reset: s; }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px 16px 58px; position: relative; }
+.steps li::before { counter-increment: s; content: counter(s); position: absolute; left: 16px; top: 16px; width: 28px; height: 28px; border-radius: 50%; background: var(--brand); color: #fff; display: grid; place-items: center; font: 600 0.85rem var(--font-display); }
+.steps b { font-family: var(--font-display); font-weight: 600; display: block; }
+.steps span { color: var(--muted); font-size: 0.95rem; }
+.get { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; display: grid; gap: 14px; }
+.get small { color: var(--muted); }
+.plat { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.plat li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.plat span { color: var(--muted); font-size: 0.9rem; text-align: right; }
+
+.stack { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.tier { padding: 20px; border-radius: 18px; border: 1px solid var(--line); background: var(--surface); display: grid; gap: 6px; align-content: start; }
+.tier p { color: var(--muted); font-size: 0.9rem; }
+.tier .eyebrow { color: var(--muted); }
+
+.close { background: var(--brand); color: #fff; border-radius: 36px 36px 0 0; }
+.close .wrap { display: grid; gap: 16px; padding-block: clamp(44px, 7vw, 76px); }
+.close p { color: rgba(255,255,255,.88); max-width: 60ch; }
+.close .eyebrow { color: var(--sky); }
+
+dialog { border: 0; padding: 0; background: transparent; max-width: min(94vw, 1200px); max-height: 94vh; }
+dialog::backdrop { background: rgba(8, 9, 30, 0.85); }
+dialog img { display: block; max-width: 100%; max-height: 86vh; border-radius: 14px; margin: 0 auto; }
+dialog p { color: #fff; text-align: center; margin-top: 10px; font-size: 0.9rem; }
+dialog button { position: fixed; top: 16px; right: 16px; border: 0; border-radius: 999px; padding: 8px 16px; font: 600 0.9rem var(--font-display); background: #fff; color: #20264a; cursor: pointer; }
+
+@media (max-width: 900px) {
+  .hero .wrap, .try { grid-template-columns: minmax(0, 1fr); }
+  .hero-copy { padding-bottom: 8px; }
+  .fan { height: clamp(320px, 90vw, 460px); max-width: 520px; width: 100%; margin: 0 auto; }
+  .journey, .numbers, .stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .desk-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pillars { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .desk-grid { grid-template-columns: minmax(0, 1fr); }
+  .nav a.opt { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <b>IMARA</b>
+    <a class="opt" href="#how">How it works</a>
+    <a class="opt" href="#desktop">Desktop</a>
+    <a class="opt" href="#phone">Phone</a>
+    <a class="opt" href="#built">How it is built</a>
+    <a href="#try">Try it</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1>Petty cash, from the first request to the last <em>shilling</em>.</h1>
+      <p>Imara is an app for companies that hand out cash every day. Staff ask for money with a photo of the receipt. Managers approve, pay from a cash box and settle advances. Every movement stays on the record.</p>
+      <div class="facts" aria-label="Project facts">
+        <span>Android, Windows, macOS, Linux</span>
+        <span>Designed and built end to end</span>
+        <span>Live server and database</span>
+      </div>
+      <div class="cta">
+        <a class="btn light" href="Imara.apk" download>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+          Download for Android
+        </a>
+        <a class="btn ghost" href="#try">How to try it</a>
+      </div>
+      <p class="by">A case study by Brian Mweri · Version 1.3.0</p>
+    </div>
+    <div class="fan" aria-label="Three screens from the phone app">
+      <button class="phone" data-caption="Staff home: open requests and advances at a glance"><img src="shots/phone_staff_home.png" alt="Staff home screen with open requests and latest requests"></button>
+      <button class="phone" data-caption="Manager home: everything that needs a decision today"><img src="shots/phone_manager_home.png" alt="Manager home with cash box total and requests waiting"></button>
+      <button class="phone" data-caption="A cash box and its record of money in and out"><img src="shots/phone_box_ledger.png" alt="Cash box screen with balance and entries"></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">The problem</span>
+        <h2>Cash goes out on WhatsApp approvals and comes back as a pile of receipts.</h2>
+        <p class="lede">Small and mid-sized companies in Kenya run on petty cash: fuel, printer ink, a taxi to the bank. Approvals happen in chats, receipts get lost, and at month end nobody can say where KES 40,000 went. Imara gives every shilling a request, a decision, a payment and a person.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How money moves</span>
+        <h2>One request, from a staff phone to a settled record</h2>
+      </div>
+      <div class="journey">
+        <div class="stop">
+          <button class="phone" data-caption="Asking: a claim back or a cash advance, with the receipt photographed"><img src="shots/phone_new_request.png" alt="New request form with amount, category and receipt" loading="lazy"></button>
+          <h3>Ask</h3><p>A claim back for money already spent, or a cash advance. The receipt is photographed in the app.</p>
+        </div>
+        <div class="stop">
+          <button class="phone" data-caption="Deciding: approve or reject; large amounts need two managers"><img src="shots/phone_request_waiting.png" alt="Request waiting with Approve and Reject buttons" loading="lazy"></button>
+          <h3>Approve</h3><p>A manager approves or rejects. Above a limit the company sets, a second manager must agree.</p>
+        </div>
+        <div class="stop">
+          <button class="phone" data-caption="Paying: from a named cash box whose balance updates itself"><img src="shots/phone_box_ledger.png" alt="Cash box entries with a payment" loading="lazy"></button>
+          <h3>Pay</h3><p>Paid from a named cash box, such as office cash or an M-Pesa float. The balance is always the sum of its entries.</p>
+        </div>
+        <div class="stop">
+          <button class="phone" data-caption="Reporting: spending by month, category and person"><img src="shots/phone_reports.png" alt="Reports with spending by month and category" loading="lazy"></button>
+          <h3>Report</h3><p>Advances are settled with receipts and change. Spending shows by month, category and person.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="desktop" class="proof">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">On a computer</span>
+        <h2>The same app, laid out for a desk</h2>
+        <p class="lede">On Windows, macOS and Linux the app rearranges itself: a side menu, tables in place of cards, and the chosen item in a panel beside the list. One codebase runs on all four systems.</p>
+      </div>
+      <div class="laptop"><button class="screen" data-caption="Home on a computer: figures across the top, decisions in a table, cash boxes beside them"><img src="shots/desktop_home.png" alt="Desktop home with figures, a table of requests needing a decision, and cash boxes"></button></div>
+      <div class="desk-grid">
+        <figure><div class="laptop"><button class="screen" data-caption="Requests: a searchable table with the chosen request beside it"><img src="shots/desktop_requests.png" alt="Desktop requests table with a request open in a side panel" loading="lazy"></button></div><figcaption><b>Requests.</b> Search, filter by step, and decide without leaving the list.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Cash boxes: every entry with the balance after it"><img src="shots/desktop_boxes.png" alt="Desktop cash boxes with a table of entries and running balance" loading="lazy"></button></div><figcaption><b>Cash boxes.</b> Every entry with the balance after it, exported in one click.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Staff: people in a table, the chosen person's details and actions beside it"><img src="shots/desktop_staff.png" alt="Desktop staff table with a person's details in a panel" loading="lazy"></button></div><figcaption><b>Staff.</b> Approve sign-ups, hand out one-time codes, change roles.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Reports: the charts side by side"><img src="shots/desktop_reports.png" alt="Desktop reports with month chart and category ring" loading="lazy"></button></div><figcaption><b>Reports.</b> Spending by month, category and person, with a spreadsheet download.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Activity log: who did what, and when"><img src="shots/desktop_activity.png" alt="Desktop activity log table" loading="lazy"></button></div><figcaption><b>Activity log.</b> Who did what and when, filtered by kind, person or date.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="New request opens as a dialog over the page you were on"><img src="shots/desktop_new_request.png" alt="New request dialog over the desktop home page" loading="lazy"></button></div><figcaption><b>New request.</b> A dialog over the page you were on.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Account: you and your security on the left, the company's rules on the right"><img src="shots/desktop_account.png" alt="Desktop account settings in two columns" loading="lazy"></button></div><figcaption><b>Account.</b> Security, money rules, appearance and privacy on one page.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Home for a staff member: their requests and what happens next on each"><img src="shots/desktop_staff_home.png" alt="Desktop staff home with a table of their requests and next steps" loading="lazy"></button></div><figcaption><b>Staff view.</b> Their own requests, with what happens next on each.</figcaption></figure>
+        <figure><div class="laptop"><button class="screen" data-caption="Sign in with a national ID number"><img src="shots/desktop_sign_in.png" alt="Desktop sign-in page split between brand and form" loading="lazy"></button></div><figcaption><b>Sign in.</b> With a national ID number. No email needed.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="phone">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">On a phone</span>
+        <h2>Built for one hand and a slow connection</h2>
+        <p class="lede">Scroll sideways for more screens. Tap any screen to see it full size.</p>
+      </div>
+      <div class="strip" tabindex="0" aria-label="Phone screens, scroll sideways for more">
+        <figure><button class="phone" data-caption="All requests, filtered by step"><img src="shots/phone_manager_requests.png" alt="Requests list with filters" loading="lazy"></button><figcaption>Requests by step</figcaption></figure>
+        <figure><button class="phone" data-caption="A sign-up waiting for a manager, checked against the ID card"><img src="shots/phone_signup_approval.png" alt="Sign-up waiting for approval" loading="lazy"></button><figcaption>Approving a sign-up</figcaption></figure>
+        <figure><button class="phone" data-caption="A one-time code for a new staff member"><img src="shots/phone_setup_code.png" alt="One-time sign-in code sheet" loading="lazy"></button><figcaption>One-time sign-in code</figcaption></figure>
+        <figure><button class="phone" data-caption="Signing up with a national ID number"><img src="shots/phone_sign_up.png" alt="Sign up form" loading="lazy"></button><figcaption>Sign up</figcaption></figure>
+        <figure><button class="phone" data-caption="The activity log"><img src="shots/phone_activity_log.png" alt="Activity log list" loading="lazy"></button><figcaption>Activity log</figcaption></figure>
+        <figure><button class="phone" data-caption="Locked after time away; unlocks with fingerprint or PIN"><img src="shots/phone_locked.png" alt="Locked screen" loading="lazy"></button><figcaption>App lock</figcaption></figure>
+        <figure><button class="phone" data-caption="The privacy notice in its own scrolling card"><img src="shots/phone_privacy_card.png" alt="Privacy notice card" loading="lazy"></button><figcaption>Privacy notice</figcaption></figure>
+        <figure><button class="phone" data-caption="Sign in, dark mode"><img src="shots/phone_dark_login.png" alt="Sign in, dark mode" loading="lazy"></button><figcaption>Dark mode: sign in</figcaption></figure>
+        <figure><button class="phone" data-caption="Manager home, dark mode"><img src="shots/phone_dark_admin_home.png" alt="Manager home, dark mode" loading="lazy"></button><figcaption>Dark mode: home</figcaption></figure>
+        <figure><button class="phone" data-caption="A request, dark mode"><img src="shots/phone_dark_request.png" alt="Request, dark mode" loading="lazy"></button><figcaption>Dark mode: a request</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="built" class="proof">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it is built</span>
+        <h2>Built to be trusted with money</h2>
+        <p class="lede">These figures come from the project itself: its test suites, its database history and its release checks.</p>
+      </div>
+      <div class="numbers">
+        <div class="number"><b>278</b><span>automated app tests, with screenshot tests of every main screen on phone and desktop</span></div>
+        <div class="number"><b>101</b><span>server tests, run against real PostgreSQL</span></div>
+        <div class="number"><b>4</b><span>systems from one codebase: Android, Windows, macOS, Linux</span></div>
+        <div class="number"><b>30 days</b><span>of nightly encrypted database backups</span></div>
+      </div>
+      <div class="pillars">
+        <div><h3>Records are never edited</h3><p>A wrong entry gets a linked correction with a reason, so the history always adds up and nothing changes unnoticed.</p></div>
+        <div><h3>Security from the first screen</h3><p>ID numbers are stored only as a keyed digest plus the last 3 digits. Sign-in attempts are limited, sessions expire after 8 hours away, the phone app locks with fingerprint or PIN and blocks screenshots, and managers can turn on authenticator codes.</p></div>
+        <div><h3>Ready for real offices</h3><p>A whole office on one Wi-Fi can sign up. A sleeping server is woken without failing the sign-in. Changes are never sent twice on a bad connection, and an outdated app is asked to update.</p></div>
+      </div>
+      <div class="stack" style="margin-top:44px">
+        <div class="tier"><span class="eyebrow">App</span><h3>Flutter</h3><p>One codebase for phone and desktop, in light and dark.</p></div>
+        <div class="tier"><span class="eyebrow">Server</span><h3>FastAPI</h3><p>Python, SQLAlchemy and Alembic. All money rules live here, not in the app.</p></div>
+        <div class="tier"><span class="eyebrow">Data</span><h3>PostgreSQL</h3><p>Hosted on Neon, with nightly encrypted backups.</p></div>
+        <div class="tier"><span class="eyebrow">Delivery</span><h3>GitHub + Render</h3><p>Every change is tested automatically before release.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="try">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Try it</span>
+        <h2>See it working on your own phone in five minutes</h2>
+        <p class="lede">The app talks to a live demo server. Nothing you enter is used for anything else.</p>
+      </div>
+      <div class="try">
+        <ol class="steps">
+          <li><b>Download the app</b><span>Tap "Download for Android" on an Android phone, then open the file.</span></li>
+          <li><b>Allow the install</b><span>If Android says installing unknown apps is blocked, tap Settings, allow your browser, go back and tap Install. If Play Protect asks, tap More details, then Install anyway. This is normal for an app shared outside the Play Store.</span></li>
+          <li><b>Sign up</b><span>Open Imara, tap Sign up, and enter a name, an ID number and a password of 12 or more characters. For this demo any 8-digit number works; it does not need to be your real ID.</span></li>
+          <li><b>Get approved</b><span>New accounts wait for a manager, exactly as in a real company. Message me and I will approve yours within minutes, or ask for a ready-made manager sign-in to see the other side.</span></li>
+          <li><b>Send a request</b><span>Tap + and make a claim with any photo as the receipt. Then watch it move: waiting, approved, paid.</span></li>
+        </ol>
+        <div class="get">
+          <h3>Get the app</h3>
+          <a class="btn solid" href="Imara.apk" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+            Download for Android
+          </a>
+          <small>Version 1.3.0 · 21 MB · Android 7 or newer</small>
+          <ul class="plat">
+            <li><b>Windows</b><span>Available on request</span></li>
+            <li><b>macOS</b><span>Available on request</span></li>
+            <li><b>Linux</b><span>Available on request</span></li>
+          </ul>
+          <small>The first sign-in of the day can take up to a minute while the demo server wakes up. After that it is fast.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="close">
+  <div class="wrap">
+    <span class="eyebrow">Work with me</span>
+    <h2>From idea to a live system your team uses every day</h2>
+    <p>I take a product from the first conversation through design, the app, the server and the database, to launch and updates after it. Imara is a working example: live, tested, and running on phones and computers.</p>
+    <p>Brian Mweri · <a href="https://github.com/Mangi-Mweri">github.com/Mangi-Mweri</a></p>
+    <p class="by">Every screen on this page shows sample data, never real people.</p>
+  </div>
+</footer>
+
+<dialog id="viewer" aria-label="Screen preview">
+  <button type="button" id="viewer-close">Close</button>
+  <img id="viewer-img" alt="">
+  <p id="viewer-caption"></p>
+</dialog>
+
+<script>
+(function () {
+  var dlg = document.getElementById('viewer');
+  var img = document.getElementById('viewer-img');
+  var cap = document.getElementById('viewer-caption');
+  document.querySelectorAll('button.phone, button.screen').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var src = b.querySelector('img');
+      img.src = src.getAttribute('src');
+      img.alt = src.alt;
+      cap.textContent = b.getAttribute('data-caption') || '';
+      if (dlg.showModal) dlg.showModal();
+    });
+  });
+  document.getElementById('viewer-close').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+})();
+</script>
+</body>
+</html>
